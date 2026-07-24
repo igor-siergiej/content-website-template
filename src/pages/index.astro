@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/ui/Button.astro';
+
+export const prerender = true;
+
+const posts = await getCollection('posts');
+---
+
+<Layout title="Keystatic & Astro's Content Collections">
+  <div>
+    <h1>Keystatic ⚡️ + Astro 🚀</h1>
+    <p>
+      This homepage shows how to load data from Astro's content collections.
+    </p>
+    <p>
+      <Button href="/keystatic">Visit the Admin UI</Button>
+    </p>
+    <h2>Posts</h2>
+    <ul>
+      {
+        posts.map(post => (
+          <li>
+            <a href={`/posts/${post.id}`}>{post.data.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>
