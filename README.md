@@ -1,19 +1,50 @@
-# Keystatic in Astro
+# Content Website Template
 
-This template shows how you can use Keystatic in an Astro site.
+Astro + Keystatic (Cloud storage) + Tailwind v4/shadcn scaffold for
+SEO-optimised content/promo sites. Deploys to AWS (S3 + CloudFront) via
+Terraform + GitHub Actions, no backend server at runtime.
 
-To setup:
+## Create a new site
 
 ```bash
-npm install
+bunx degit igor-siergiej/content-website-template my-site
+cd my-site
+bun run init my-site         # replaces __APP_NAME__/__APP_TITLE__ tokens, removes itself
+bun install
+git init && git add -A && git commit -m "chore: scaffold from content-website-template"
 ```
 
-To run:
+## Stack
 
+| Concern | Choice |
+|---------|--------|
+| Runtime / package manager | Bun |
+| Framework | Astro 7 (static output) |
+| Content / CMS | Keystatic, `storage: { kind: 'cloud' }` — admin at `/keystatic`, commits straight to GitHub, no backend |
+| UI | React 19 islands, Tailwind v4, shadcn (radix base, nova preset) |
+| Lint / format | Biome |
+| Hooks | Husky + lint-staged + commitlint (Conventional Commits) |
+| Release | semantic-release |
+| Dead code | Fallow |
+| CI | GitHub Actions (`.github/workflows`) |
+| Infra | Terraform (`infra/`) — S3 + CloudFront + GitHub OIDC, no servers |
+
+## Commands
+
+```bash
+bun run dev            # dev server, :4321
+bun run build          # static build -> dist/
+bun run preview        # preview the static build
+bun run lint           # biome check
+bun run test           # vitest
+bun run test:e2e       # playwright
 ```
-npm run dev
-```
 
-Admin UI: [http://127.0.0.1:4321/keystatic](http://127.0.0.1:4321/keystatic)
+## Post-scaffold setup
 
-Homepage: [http://localhost:4321](http://localhost:4321)
+1. Create the Keystatic Cloud project (keystatic.cloud) and set
+   `cloud.project` in `keystatic.config.ts` to `<team>/<project>`.
+2. Fill in `src/config/site.ts` (name, url, description, social, OG image).
+3. Fill in `infra/variables.tf`'s `domain_name` (left blank by `init.ts`).
+4. Create the GitHub repo, push, then follow `infra/README.md` to apply
+   Terraform and wire up the `gha-deploy`/`gha-terraform` OIDC roles.
