@@ -1,31 +1,52 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import Button from '../components/ui/Button.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import { siteConfig } from '@/config/site';
+import { Navbar } from '@/components/sections/Navbar';
+import { Hero } from '@/components/sections/Hero';
+import { Sponsors } from '@/components/sections/Sponsors';
+import { About } from '@/components/sections/About';
+import { HowItWorks } from '@/components/sections/HowItWorks';
+import { Features } from '@/components/sections/Features';
+import { Services } from '@/components/sections/Services';
+import { Cta } from '@/components/sections/Cta';
+import { Testimonials } from '@/components/sections/Testimonials';
+import { Team } from '@/components/sections/Team';
+import { Pricing } from '@/components/sections/Pricing';
+import { Newsletter } from '@/components/sections/Newsletter';
+import { FAQ } from '@/components/sections/FAQ';
+import { Footer } from '@/components/sections/Footer';
+import { ScrollToTop } from '@/components/sections/ScrollToTop';
 
 export const prerender = true;
-
-const posts = await getCollection('posts');
 ---
 
-<Layout title="Keystatic & Astro's Content Collections">
-  <div>
-    <h1>Keystatic ⚡️ + Astro 🚀</h1>
-    <p>
-      This homepage shows how to load data from Astro's content collections.
-    </p>
-    <p>
-      <Button href="/keystatic">Visit the Admin UI</Button>
-    </p>
-    <h2>Posts</h2>
-    <ul>
-      {
-        posts.map(post => (
-          <li>
-            <a href={`/posts/${post.id}`}>{post.data.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+<Layout title={siteConfig.name} description={siteConfig.description}>
+  {siteConfig.faqs.length > 0 && (
+    <JsonLd
+      schema={{
+        '@type': 'FAQPage',
+        mainEntity: siteConfig.faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+        })),
+      }}
+    />
+  )}
+  <Navbar client:load />
+  <Hero />
+  <Sponsors />
+  <About />
+  <HowItWorks />
+  <Features />
+  <Services />
+  <Cta />
+  <Testimonials />
+  <Team />
+  <Pricing />
+  <Newsletter client:load />
+  <FAQ client:load />
+  <Footer />
+  <ScrollToTop client:load />
 </Layout>

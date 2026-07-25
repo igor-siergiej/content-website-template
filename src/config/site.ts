@@ -21,7 +21,10 @@ export const siteConfig = {
     name: '__APP_TITLE__',
     title: '__APP_TITLE__',
     description: 'A short description of __APP_TITLE__.',
-    url: process.env.SITE_URL ?? 'http://localhost:4321',
+    // Guarded with `typeof process !== 'undefined'` because this module is also imported by
+    // client-hydrated islands (Navbar, FAQ), where `process` doesn't exist and a bare
+    // `process.env` access throws `ReferenceError: process is not defined` on hydration.
+    url: (typeof process !== 'undefined' ? process.env.SITE_URL : undefined) ?? 'http://localhost:4321',
     locale: 'en',
     social: {
         twitter: '',

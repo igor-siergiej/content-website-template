@@ -50,9 +50,11 @@ export const Navbar = () => {
 
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger className="px-2">
-                                <Menu className="flex md:hidden h-5 w-5" onClick={() => setIsOpen(true)}>
-                                    <span className="sr-only">Menu Icon</span>
-                                </Menu>
+                                {/* `sr-only` label must be a sibling, not a child, of the Menu icon: lucide-react
+                                    renders `children` inside the icon's <svg>, and a <span> there is invalid SVG
+                                    nesting that causes an SSR/client hydration mismatch */}
+                                <Menu className="flex md:hidden h-5 w-5" onClick={() => setIsOpen(true)} />
+                                <span className="sr-only">Menu Icon</span>
                             </SheetTrigger>
 
                             <SheetContent side={'left'}>
