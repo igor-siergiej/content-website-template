@@ -3,6 +3,8 @@ import { getCollection, getEntry, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import JsonLd from '@/components/JsonLd.astro';
 import { siteConfig } from '@/config/site';
+import { estimateReadingMinutes } from '@/lib/reading-time';
+import { getRelatedPosts } from '@/lib/related-posts';
 
 export const prerender = true;
 
@@ -12,6 +14,10 @@ const post = await getEntry('posts', slug);
 
 if (!post) throw new Error('No post found for this slug');
 const { Content } = await render(post);
+
+const allPosts = await getCollection('posts');
+const relatedPosts = getRelatedPosts(allPosts, post.id);
+const readingMinutes = estimateReadingMinutes(post.body ?? '');
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -31,5 +37,16 @@ export async function getStaticPaths() {
     }}
   />
   <h1>{post.data.title}</h1>
+  <p>{readingMinutes} min read</p>
   <Content />
+  {relatedPosts.length > 0 && (
+    <>
+      <h2>Related posts</h2>
+      <ul>
+        {relatedPosts.map((related) => (
+          <li><a href={`/posts/${related.id}`}>{related.data.title}</a></li>
+        ))}
+      </ul>
+    </>
+  )}
 </Layout>
