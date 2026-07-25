@@ -91,6 +91,14 @@
           "complexity": { "noImportantStyles": "off" }
         }
       }
+    },
+    {
+      "includes": ["src/content.config.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": { "noTsIgnore": "off" }
+        }
+      }
     }
   ]
 }
