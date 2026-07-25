@@ -34,10 +34,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "init": "bun run scripts/init.ts"
+    "init": "bun run scripts/init.ts",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.1",
-    "typescript": "^5.7"
+    "typescript": "^5.7",
+    "vitest": "^4.1.10"
   }
 }
