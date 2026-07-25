@@ -1,8 +1,5 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import JsonLd from '@/components/JsonLd.astro';
-import { siteConfig } from '@/config/site';
 import { estimateReadingMinutes } from '@/lib/reading-time';
 import { getRelatedPosts } from '@/lib/related-posts';
 
@@ -20,8 +17,8 @@ const relatedPosts = getRelatedPosts(allPosts, post.id);
 const readingMinutes = estimateReadingMinutes(post.body ?? '');
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  return posts.map(post => ({ params: { slug: post.id } }));
+    const posts = await getCollection('posts');
+    return posts.map((post) => ({ params: { slug: post.id } }));
 }
 ---
 

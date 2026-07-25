@@ -38,11 +38,32 @@
     "astro": "astro",
     "init": "bun run scripts/init.ts",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --fix --unsafe .",
+    "format": "biome format --write .",
+    "audit": "fallow-audit",
+    "prepare": "husky",
+    "release": "semantic-release"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,astro,json}": "biome check --fix --unsafe"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.5",
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
     "@playwright/test": "^1.62.0",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "@types/node": "^26.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.2.0",
+    "semantic-release": "^25.0.8",
     "typescript": "^5.7",
     "vitest": "^4.1.10"
   }
