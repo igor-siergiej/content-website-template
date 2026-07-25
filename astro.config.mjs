@@ -50,7 +50,9 @@ const keystatic = () => {
 
 // https://astro.build/config
 export default defineConfig({
-    site: process.env.SITE_URL ?? 'http://localhost:4321',
+    // `|| ` (not `??`): an unset `vars.SITE_URL` in CI is passed through as `''`, not
+    // undefined — `??` wouldn't fall back for that, and astro build fails on `site: ''`.
+    site: process.env.SITE_URL || 'http://localhost:4321',
     output: 'static',
     integrations: [
         react(),

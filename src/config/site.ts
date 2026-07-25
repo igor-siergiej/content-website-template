@@ -24,7 +24,12 @@ export const siteConfig = {
     // Guarded with `typeof process !== 'undefined'` because this module is also imported by
     // client-hydrated islands (Navbar, FAQ), where `process` doesn't exist and a bare
     // `process.env` access throws `ReferenceError: process is not defined` on hydration.
-    url: (typeof process !== 'undefined' ? process.env.SITE_URL : undefined) ?? 'http://localhost:4321',
+    // `|| ` (not `??`): an unset `vars.SITE_URL` in CI is passed through as `''`, not
+    // undefined — `??` wouldn't fall back for that. Guarded with `typeof process !==
+    // 'undefined'` because this module is also imported by client-hydrated islands
+    // (Navbar, FAQ), where `process` doesn't exist and a bare `process.env` access
+    // throws `ReferenceError: process is not defined` on hydration.
+    url: (typeof process !== 'undefined' ? process.env.SITE_URL : undefined) || 'http://localhost:4321',
     locale: 'en',
     social: {
         twitter: '',
