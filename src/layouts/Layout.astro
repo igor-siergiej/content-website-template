@@ -1,6 +1,8 @@
 ---
 import '../styles.css';
 import Seo from '@/components/Seo.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import { siteConfig } from '@/config/site';
 
 export interface Props {
 	title: string;
@@ -9,6 +11,27 @@ export interface Props {
 }
 
 const { title, description, image } = Astro.props;
+
+const orgSchema = siteConfig.business
+  ? {
+      '@type': siteConfig.business.type,
+      name: siteConfig.name,
+      url: siteConfig.url,
+      telephone: siteConfig.business.telephone,
+      address: {
+        '@type': 'PostalAddress',
+        ...siteConfig.business.address,
+      },
+      openingHours: siteConfig.business.openingHours,
+      ...(siteConfig.business.aggregateRating && {
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: siteConfig.business.aggregateRating.ratingValue,
+          reviewCount: siteConfig.business.aggregateRating.reviewCount,
+        },
+      }),
+    }
+  : { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url };
 ---
 
 <!DOCTYPE html>
@@ -19,6 +42,7 @@ const { title, description, image } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<Seo title={title} description={description} image={image} />
+		<JsonLd schema={orgSchema} />
 	</head>
 	<body>
 		<slot />
