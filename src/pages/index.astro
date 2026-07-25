@@ -4,16 +4,7 @@ import JsonLd from '@/components/JsonLd.astro';
 import { siteConfig } from '@/config/site';
 import { Navbar } from '@/components/sections/Navbar';
 import { Hero } from '@/components/sections/Hero';
-import { Sponsors } from '@/components/sections/Sponsors';
-import { About } from '@/components/sections/About';
-import { HowItWorks } from '@/components/sections/HowItWorks';
 import { Features } from '@/components/sections/Features';
-import { Services } from '@/components/sections/Services';
-import { Cta } from '@/components/sections/Cta';
-import { Testimonials } from '@/components/sections/Testimonials';
-import { Team } from '@/components/sections/Team';
-import { Pricing } from '@/components/sections/Pricing';
-import { Newsletter } from '@/components/sections/Newsletter';
 import { FAQ } from '@/components/sections/FAQ';
 import { Footer } from '@/components/sections/Footer';
 import { ScrollToTop } from '@/components/sections/ScrollToTop';
@@ -36,16 +27,7 @@ export const prerender = true;
   )}
   <Navbar client:load />
   <Hero />
-  <Sponsors />
-  <About />
-  <HowItWorks />
   <Features />
-  <Services />
-  <Cta />
-  <Testimonials />
-  <Team />
-  <Pricing />
-  <Newsletter client:load />
   <FAQ client:load />
   <Footer />
   <ScrollToTop client:load />
