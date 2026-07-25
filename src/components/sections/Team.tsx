@@ -115,15 +115,12 @@ export const Team = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-10">
                 {teamList.map(({ imageUrl, name, position, socialNetworks }: TeamProps) => (
-                    <Card
-                        key={name}
-                        className="bg-muted/50 relative mt-8 flex flex-col items-center justify-center overflow-visible"
-                    >
-                        <CardHeader className="mt-8 flex flex-col justify-center items-center pb-2">
+                    <Card key={name} className="bg-muted/50">
+                        <CardHeader className="flex flex-col items-center justify-center pb-2">
                             <img
                                 src={imageUrl}
                                 alt={`${name} ${position}`}
-                                className="absolute -top-12 rounded-full w-24 h-24 aspect-square object-cover"
+                                className="mb-4 w-20 h-20 aspect-square rounded-full object-cover"
                             />
                             <CardTitle className="text-center">{name}</CardTitle>
                             <CardDescription className="text-primary">{position}</CardDescription>
@@ -133,7 +130,7 @@ export const Team = () => {
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                         </CardContent>
 
-                        <CardFooter>
+                        <CardFooter className="justify-center">
                             {socialNetworks.map(({ name, url }: SociaNetworkslProps) => (
                                 <div key={name}>
                                     <a
