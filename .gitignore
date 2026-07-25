@@ -4,3 +4,8 @@
 /node_modules
 /test-results
 /playwright-report
+
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.*
+infra/*.tfvars
