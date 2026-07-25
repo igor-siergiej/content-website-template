@@ -33,3 +33,9 @@ variable "domain_name" {
   type        = string
   default     = ""
 }
+
+variable "tfstate_bucket" {
+  description = "S3 bucket holding this project's Terraform state (must already exist — create it manually before the first `terraform init`; must match backend.tf's `bucket` value exactly)."
+  type        = string
+  default     = ""
+}

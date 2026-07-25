@@ -57,13 +57,27 @@ flowchart LR
 
 ## First apply
 
+Terraform state lives in an S3 backend (`backend.tf`) with native S3 locking — no DynamoDB
+table needed. That bucket can't be created by the same Terraform config that needs it to
+store its own state, so create it manually first:
+
+```bash
+aws s3 mb s3://your-project-tfstate-<account-id> --region eu-west-2
+aws s3api put-bucket-versioning --bucket your-project-tfstate-<account-id> --versioning-configuration Status=Enabled
+```
+
+Then replace `CHANGEME` in `infra/backend.tf`'s `bucket` with that real bucket name, and set
+the same value for `tfstate_bucket` in a `terraform.tfvars` (gitignored, `infra/*.tfvars`):
+
+```hcl
+tfstate_bucket = "your-project-tfstate-<account-id>"
+```
+
 ```bash
 cd infra
 terraform init
 terraform apply
 ```
-
-Terraform state lives in an S3 backend (`backend.tf`) with native S3 locking — no DynamoDB table needed.
 
 ## Wire up CI deploy
 

@@ -196,8 +196,8 @@ data "aws_iam_policy_document" "terraform" {
     sid     = "TfState"
     actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
     resources = [
-      "arn:aws:s3:::karate-promo-tfstate-777799876926",
-      "arn:aws:s3:::karate-promo-tfstate-777799876926/*",
+      "arn:aws:s3:::${var.tfstate_bucket}",
+      "arn:aws:s3:::${var.tfstate_bucket}/*",
     ]
   }
 
