@@ -1,5 +1,8 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import { siteConfig } from '@/config/site';
 import { estimateReadingMinutes } from '@/lib/reading-time';
 import { getRelatedPosts } from '@/lib/related-posts';
 

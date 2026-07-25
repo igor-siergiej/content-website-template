@@ -70,6 +70,19 @@
     {
       "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
       "linter": { "rules": { "suspicious": { "noExplicitAny": "off" } } }
+    },
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": { "noUnusedImports": "off" }
+        }
+      },
+      "assist": {
+        "actions": {
+          "source": { "organizeImports": "off" }
+        }
+      }
     }
   ]
 }
