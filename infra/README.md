@@ -9,7 +9,7 @@ flowchart LR
     user([Visitor]):::ext
 
     subgraph aws["AWS"]
-        cf["CloudFront distribution<br/>redirect-to-https · gzip<br/>403/404 → /index.html (SPA)"]
+        cf["CloudFront distribution<br/>redirect-to-https · gzip<br/>403/404 → /404.html"]
         oac{{"Origin Access Control<br/>(SigV4 signed)"}}
         s3[("S3 bucket (private)<br/>static build<br/>public access blocked")]
         role["IAM role: gha-deploy<br/>s3 Put/Delete/List +<br/>cloudfront CreateInvalidation"]
@@ -89,7 +89,13 @@ gh variable set S3_BUCKET                 -b "$(terraform output -raw bucket_nam
 gh variable set CLOUDFRONT_DISTRIBUTION_ID -b "$(terraform output -raw distribution_id)"
 gh variable set AWS_DEPLOY_ROLE_ARN       -b "$(terraform output -raw deploy_role_arn)"
 gh variable set AWS_REGION                -b "$(terraform output -raw aws_region)"
+gh variable set SITE_URL                  -b "https://your-domain.example"
 ```
+
+Also set **`SITE_URL`**, to your real domain (or `terraform output -raw cloudfront_url` if you
+haven't attached a custom domain yet). It's read at build time for every canonical URL,
+OG tag, sitemap entry and RSS link — leaving it unset silently ships
+`http://localhost:4321` everywhere.
 
 After that, every push to `main` builds and deploys via `.github/workflows/ci-cd.yml`
 (no long-lived AWS keys — the workflow assumes the role through OIDC).
@@ -120,7 +126,8 @@ not as something that physically blocks the merge button.
 - Bucket is private; only CloudFront can read it (OAC + bucket policy scoped to the distribution ARN).
 - Bucket versioning is enabled for rollback after a bad deploy; noncurrent versions expire after 30 days.
 - Responses carry a security headers policy (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, X-XSS-Protection).
-- SPA routing: CloudFront maps 403/404 → `/index.html` (200).
-- Caching: hashed `assets/*` uploaded `immutable`, `index.html` uploaded `no-cache` — set by the deploy job.
+- Routing: a missing/mistyped path is a real 404 — CloudFront maps 403/404 → `/404.html` (response code 404), not to the homepage.
+- Caching: content-hashed `_astro/*` uploaded `immutable`; `images/*` (Keystatic overwrites these in place) uploaded with a 1-hour cache; every page, `sitemap*.xml`, `rss.xml` and `robots.txt` uploaded `no-cache` — set by the deploy job in `.github/workflows/ci-cd.yml`.
+- `var.domain_hidden` (default `false`) 403s the real domain while `true`, leaving only the `*.cloudfront.net` URL reachable — use it to stage a domain pre-launch, then flip to `false` (or unset) to go live.
 - If the account already has a GitHub OIDC provider, `terraform import` it into
   `aws_iam_openid_connect_provider.github` before applying (AWS allows only one per URL).

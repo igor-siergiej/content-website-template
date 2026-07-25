@@ -29,6 +29,6 @@ output "cloudfront_url" {
 }
 
 output "route53_name_servers" {
-  description = "Set these as the NS records at the registrar (HostPapa) to delegate the domain."
+  description = "Set these as the NS records at your domain registrar to delegate the domain."
   value       = aws_route53_zone.site.name_servers
 }

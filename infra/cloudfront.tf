@@ -41,20 +41,21 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
   }
 }
 
-# /keystatic is a directory, not an object, so it would hit the SPA 403/404 fallback below
-# and render the site instead of the CMS. Rewrite it to the real entry point. Also rewrites
+# /keystatic is a directory, not an object, so it would hit the 403/404 fallback below and
+# render the 404 page instead of the CMS. Rewrite it to the real entry point. Also rewrites
 # the Cloud-mode OAuth callback path, which is a fixed URL the browser is redirected to
 # directly and would otherwise 404.
 #
 # Also gates the site by hostname: while hidden, the domain aliases 403 but the raw
 # *.cloudfront.net URL keeps working, since disabling the whole distribution would take
-# both down. Flip DOMAIN_HIDDEN to false to restore the domain.
+# both down. var.domain_hidden defaults to false — flip it to true only while
+# deliberately holding a domain back pre-launch (see infra/README.md).
 resource "aws_cloudfront_function" "keystatic_index" {
   name    = "${var.project}-keystatic-index"
   runtime = "cloudfront-js-2.0"
   publish = true
   code    = <<-JS
-    var DOMAIN_HIDDEN = true;
+    var DOMAIN_HIDDEN = ${var.domain_hidden};
     var HIDDEN_HOSTS = ['${var.domain_name}', 'www.${var.domain_name}'];
 
     function handler(event) {
@@ -104,18 +105,21 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
-  # SPA fallback: unknown paths serve index.html.
+  # This is a static multi-page site, not a client-routed SPA: an unknown path is a real
+  # 404, not a client-side route to hand to index.html. The private bucket's OAC-only
+  # policy also means a genuinely missing key comes back from S3 as 403 (no s3:ListBucket
+  # to distinguish "denied" from "not found"), so both codes route to the same 404 page.
   custom_error_response {
     error_code            = 403
-    response_code         = 200
-    response_page_path    = "/index.html"
+    response_code         = 404
+    response_page_path    = "/404.html"
     error_caching_min_ttl = 0
   }
 
   custom_error_response {
     error_code            = 404
-    response_code         = 200
-    response_page_path    = "/index.html"
+    response_code         = 404
+    response_page_path    = "/404.html"
     error_caching_min_ttl = 0
   }
 

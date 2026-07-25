@@ -26,6 +26,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "site" {
     id     = "expire-noncurrent-versions"
     status = "Enabled"
 
+    # Empty filter = applies to every object; required explicitly since provider v6 (AWS
+    # provider warns and will error on this being implicit).
+    filter {}
+
     noncurrent_version_expiration {
       noncurrent_days = 30
     }

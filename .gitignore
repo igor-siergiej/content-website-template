@@ -5,6 +5,10 @@
 /test-results
 /playwright-report
 
+.env
+.env.*
+!.env.example
+
 infra/.terraform/
 infra/*.tfstate
 infra/*.tfstate.*

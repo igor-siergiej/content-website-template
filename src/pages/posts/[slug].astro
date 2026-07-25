@@ -44,7 +44,7 @@ export async function getStaticPaths() {
       <h2>Related posts</h2>
       <ul>
         {relatedPosts.map((related) => (
-          <li><a href={`/posts/${related.id}`}>{related.data.title}</a></li>
+          <li><a href={`/posts/${related.id}/`}>{related.data.title}</a></li>
         ))}
       </ul>
     </>

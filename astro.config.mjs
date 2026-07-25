@@ -10,7 +10,7 @@ const keystatic = () => {
     return {
         name: 'keystatic',
         hooks: {
-            'astro:config:setup': ({ injectRoute, updateConfig, config }) => {
+            'astro:config:setup': ({ updateConfig, config }) => {
                 // Server config for keystatic dev mode
                 updateConfig({
                     server: config.server.host
@@ -52,7 +52,14 @@ const keystatic = () => {
 export default defineConfig({
     site: process.env.SITE_URL ?? 'http://localhost:4321',
     output: 'static',
-    integrations: [react(), markdoc(), keystatic(), sitemap()],
+    integrations: [
+        react(),
+        markdoc(),
+        keystatic(),
+        // The Keystatic admin isn't content — robots.txt disallows it too, so keep it out
+        // of the sitemap or Search Console reports "Submitted URL blocked by robots.txt".
+        sitemap({ filter: (page) => !page.includes('/keystatic') }),
+    ],
     vite: {
         plugins: [tailwindcss()],
     },
