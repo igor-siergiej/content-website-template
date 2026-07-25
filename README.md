@@ -45,6 +45,7 @@ bun run test:e2e       # playwright
 1. Create the Keystatic Cloud project (keystatic.cloud) and set
    `cloud.project` in `keystatic.config.ts` to `<team>/<project>`.
 2. Fill in `src/config/site.ts` (name, url, description, social, OG image).
-3. Fill in `infra/variables.tf`'s `domain_name` (left blank by `init.ts`).
-4. Create the GitHub repo, push, then follow `infra/README.md` to apply
+3. Set the `Sitemap:` line in `public/robots.txt` to your real domain.
+4. Fill in `infra/variables.tf`'s `domain_name` (left blank by `init.ts`).
+5. Create the GitHub repo, push, then follow `infra/README.md` to apply
    Terraform and wire up the `gha-deploy`/`gha-terraform` OIDC roles.

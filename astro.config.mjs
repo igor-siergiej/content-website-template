@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 // Custom keystatic integration for Cloud mode with static output
@@ -47,7 +48,7 @@ const keystatic = () => {
 export default defineConfig({
   site: process.env.SITE_URL ?? 'http://localhost:4321',
   output: 'static',
-  integrations: [react(), markdoc(), keystatic()],
+  integrations: [react(), markdoc(), keystatic(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },
