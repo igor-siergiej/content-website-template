@@ -38,4 +38,9 @@ variable "tfstate_bucket" {
   description = "S3 bucket holding this project's Terraform state (must already exist — create it manually before the first `terraform init`; must match backend.tf's `bucket` value exactly)."
   type        = string
   default     = ""
+
+  validation {
+    condition     = length(var.tfstate_bucket) > 0
+    error_message = "tfstate_bucket must be set (in terraform.tfvars) to the same bucket name as backend.tf's `bucket` value — it can't be left blank."
+  }
 }
