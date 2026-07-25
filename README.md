@@ -49,3 +49,9 @@ bun run test:e2e       # playwright
 4. Fill in `infra/variables.tf`'s `domain_name` (left blank by `init.ts`).
 5. Create the GitHub repo, push, then follow `infra/README.md` to apply
    Terraform and wire up the `gha-deploy`/`gha-terraform` OIDC roles.
+
+## Credits
+
+UI skeleton adapted from
+[leoMirandaa/shadcn-landing-page](https://github.com/leoMirandaa/shadcn-landing-page)
+(MIT).
