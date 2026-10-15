@@ -9,6 +9,8 @@
 .env.*
 !.env.example
 
+.kanban-cli.json
+
 infra/.terraform/
 infra/*.tfstate
 infra/*.tfstate.*
