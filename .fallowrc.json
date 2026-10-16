@@ -2,6 +2,7 @@
   "ignorePatterns": [
     "**/*.test.ts",
     "**/*.test.tsx",
+    "**/*.spec.ts",
     "**/*.integration.test.ts",
     "**/dist/**",
     "**/build/**",
