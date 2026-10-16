@@ -5,7 +5,9 @@
     "**/*.integration.test.ts",
     "**/dist/**",
     "**/build/**",
-    "**/coverage/**"
+    "**/coverage/**",
+    ".fallow/**",
+    ".fallowrc.json"
   ],
   "ignoreUnresolvedImports": ["bun:test"],
   "ignoreDependencies": [
