@@ -4,6 +4,7 @@
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.integration.test.ts",
+    "**/playwright.config.ts",
     "**/dist/**",
     "**/build/**",
     "**/coverage/**",
