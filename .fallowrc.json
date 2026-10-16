@@ -18,6 +18,7 @@
     "@astrojs/sitemap",
     "@keystatic/astro",
     "@keystatic/core",
-    "@tailwindcss/vite"
+    "@tailwindcss/vite",
+    "shadcn"
   ]
 }
