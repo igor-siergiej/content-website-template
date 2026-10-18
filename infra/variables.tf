@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project" {
   description = "Project name, used to prefix resource names."
   type        = string
-  default     = "__APP_NAME__"
+  default     = "content-website-template"
 }
 
 variable "bucket_name" {
@@ -17,9 +17,25 @@ variable "bucket_name" {
 }
 
 variable "github_repo" {
-  description = "owner/repo allowed to assume the deploy role via GitHub OIDC."
+  description = <<-DESC
+    GitHub's OIDC sub-claim prefix for the repo allowed to assume the deploy role. The
+    tutorial value is 'owner/repo', but GitHub issues an immutable, ID-suffixed subject
+    ('owner@<owner-id>/repo@<repo-id>') for any repository created on or after 15 July
+    2026, and for any repository renamed or transferred after that date. A rename is not
+    what causes it — creation date alone is enough. Older repositories can also opt in.
+
+    A wrong value makes every AssumeRoleWithWebIdentity call fail with 'Not authorized
+    to perform sts:AssumeRoleWithWebIdentity' — a message that says nothing about
+    repository names. To recover the live value for this repo, run:
+
+        gh api repos/OWNER/REPO/actions/oidc/customization/sub
+
+    and copy `sub_claim_prefix` here verbatim, minus its leading 'repo:'
+    (e.g. 'owner@<owner-id>/repo@<repo-id>'). The plain 'owner/repo' form still works
+    for repositories that predate the 2026-07-15 cutover and haven't opted in.
+  DESC
   type        = string
-  default     = "igor-siergiej/__APP_NAME__"
+  default     = "igor-siergiej@79415930/content-website-template@1312313818"
 }
 
 variable "price_class" {
@@ -29,7 +45,7 @@ variable "price_class" {
 }
 
 variable "domain_name" {
-  description = "Domain to host in Route 53 (delegate NS records here from the registrar)."
+  description = "Apex domain to host in Route 53 (delegate NS records here from the registrar). Empty (the default) skips ACM and Route 53 entirely and serves the site off its *.cloudfront.net URL with CloudFront's default certificate."
   type        = string
   default     = ""
 }
@@ -43,10 +59,23 @@ variable "domain_hidden" {
 variable "tfstate_bucket" {
   description = "S3 bucket holding this project's Terraform state (must already exist — create it manually before the first `terraform init`; must match backend.tf's `bucket` value exactly)."
   type        = string
-  default     = ""
+  default     = "content-website-template-tfstate-777799876926"
+}
 
-  validation {
-    condition     = length(var.tfstate_bucket) > 0
-    error_message = "tfstate_bucket must be set (in terraform.tfvars) to the same bucket name as backend.tf's `bucket` value — it can't be left blank."
-  }
+variable "existing_oidc_provider_arn" {
+  description = "ARN of an already-created GitHub Actions OIDC provider to reuse instead of creating a new one. AWS allows only one provider per URL per account; taisei owns it in this account so it is set by default."
+  type        = string
+  default     = "arn:aws:iam::777799876926:oidc-provider/token.actions.githubusercontent.com"
+}
+
+variable "enable_monitoring" {
+  description = "Provisions the SNS alert topic and CloudWatch alarms in monitoring.tf. AWS emails a subscription confirmation on first apply — an unconfirmed subscription delivers nothing."
+  type        = bool
+  default     = false
+}
+
+variable "alert_email" {
+  description = "Address subscribed to the SNS alert topic (monitoring.tf). AWS emails a confirmation on first apply; until it's clicked the subscription delivers nothing. Required when enable_monitoring = true."
+  type        = string
+  default     = ""
 }

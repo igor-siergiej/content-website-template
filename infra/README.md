@@ -129,5 +129,27 @@ not as something that physically blocks the merge button.
 - Routing: a missing/mistyped path is a real 404 — CloudFront maps 403/404 → `/404.html` (response code 404), not to the homepage.
 - Caching: content-hashed `_astro/*` uploaded `immutable`; `images/*` (Keystatic overwrites these in place) uploaded with a 1-hour cache; every page, `sitemap*.xml`, `rss.xml` and `robots.txt` uploaded `no-cache` — set by the deploy job in `.github/workflows/ci-cd.yml`.
 - `var.domain_hidden` (default `false`) 403s the real domain while `true`, leaving only the `*.cloudfront.net` URL reachable — use it to stage a domain pre-launch, then flip to `false` (or unset) to go live.
-- If the account already has a GitHub OIDC provider, `terraform import` it into
-  `aws_iam_openid_connect_provider.github` before applying (AWS allows only one per URL).
+- If the account already has a GitHub OIDC provider, set `var.existing_oidc_provider_arn`
+  to its ARN so this stack reuses it instead of trying to create a second one (AWS
+  allows only one per URL — re-applying without that variable against an account that
+  already has one fails with `EntityAlreadyExists`). Leave it empty only in a fresh
+  account so the provider gets created.
+- `var.domain_name` (default `""`) toggles the whole DNS path. With it empty, this
+  stack creates no `aws_route53_zone`, no Route 53 alias records, and no ACM
+  certificate; CloudFront is reachable only via its default `*.cloudfront.net` URL.
+  When ready to attach a real domain, set `var.domain_name` and re-apply — Route 53 is
+  brought up (delegate the zone's NS records at the registrar) and a DNS-validated ACM
+  certificate in `us-east-1` attaches to the distribution. Outputs:
+  `terraform output -raw route53_name_servers` is `null` until the domain is set.
+- `var.github_repo` defaults to `owner/__APP_NAME__`, which works for repositories
+  created before 2026-07-15 that haven't opted in to immutable subjects. GitHub issues
+  an immutable, ID-suffixed sub-claim (`owner@<owner-id>/repo@<repo-id>`) for any
+  repository created on or after that date — a wrong value silently breaks every
+  AssumeRoleWithWebIdentity call with a misleading message that never names the repo.
+  See `var.github_repo` in `variables.tf` for the API call that recovers the live
+  value.
+- `var.enable_monitoring` (default `false`) provisions the SNS alert topic, the
+  CloudWatch log group for the distribution (`/aws/cloudfront/${var.project}`), and the
+  `5xx`/`4xx` rate + request-flood alarms in `monitoring.tf`. Setting it to `true`
+  without setting `var.alert_email` causes the email subscription to fail; AWS emails a
+  confirmation on first apply — unconfirmed subscriptions deliver nothing.
