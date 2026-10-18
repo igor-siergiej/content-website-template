@@ -1,3 +1,8 @@
+// fallow-ignore-file unused-file: this file is loaded by CloudFront (referenced
+// from infra/cloudfront.tf via file() and registered as a viewer-request
+// function_association), not by the Node/Astro app. fallow's entry-point
+// graph doesn't see that contract.
+
 // CloudFront Functions v2 viewer-request: rewrites directory-format Astro routes to
 // their index.html object so S3 can serve them. `/about` and `/about/` both become
 // `/about/index.html`. Paths that already carry a file extension (`/rss.xml`,
