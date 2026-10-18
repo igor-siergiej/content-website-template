@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project" {
   description = "Project name, used to prefix resource names."
   type        = string
-  default     = "__APP_NAME__"
+  default     = "content-website-template"
 }
 
 variable "bucket_name" {
@@ -35,7 +35,7 @@ variable "github_repo" {
     for repositories that predate the 2026-07-15 cutover and haven't opted in.
   DESC
   type        = string
-  default     = "owner/__APP_NAME__"
+  default     = "igor-siergiej@79415930/content-website-template@1312313818"
 }
 
 variable "price_class" {
@@ -59,18 +59,13 @@ variable "domain_hidden" {
 variable "tfstate_bucket" {
   description = "S3 bucket holding this project's Terraform state (must already exist — create it manually before the first `terraform init`; must match backend.tf's `bucket` value exactly)."
   type        = string
-  default     = ""
-
-  validation {
-    condition     = length(var.tfstate_bucket) > 0
-    error_message = "tfstate_bucket must be set (in terraform.tfvars) to the same bucket name as backend.tf's `bucket` value — it can't be left blank."
-  }
+  default     = "content-website-template-tfstate-777799876926"
 }
 
 variable "existing_oidc_provider_arn" {
-  description = "ARN of an already-created GitHub Actions OIDC provider to reuse instead of creating a new one. AWS allows only one provider per URL per account; leave empty in a fresh account so the provider gets created on first apply, or set it to the existing ARN to share the provider with other stacks in the same account."
+  description = "ARN of an already-created GitHub Actions OIDC provider to reuse instead of creating a new one. AWS allows only one provider per URL per account; taisei owns it in this account so it is set by default."
   type        = string
-  default     = ""
+  default     = "arn:aws:iam::777799876926:oidc-provider/token.actions.githubusercontent.com"
 }
 
 variable "enable_monitoring" {
