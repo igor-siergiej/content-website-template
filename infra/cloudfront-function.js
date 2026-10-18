@@ -6,6 +6,10 @@
 //
 // Triggered by aws_cloudfront_function.site_dir_rewrite in cloudfront.tf as a
 // viewer-request function_association on the distribution's default cache behavior.
+//
+// CloudFront Functions v2 expects a top-level function called `handler`; the
+// `module.exports` line below both documents that contract for biome and makes
+// the function reachable from the static analysis that lints the file.
 function handler(event) {
     var request = event.request;
 
@@ -19,11 +23,13 @@ function handler(event) {
 
     // Empty last segment means the URI ended in `/` — strip it, append /index.html.
     if (lastSegment === '') {
-        request.uri = request.uri + 'index.html';
+        request.uri = `${request.uri}index.html`;
         return request;
     }
 
     // Directory-format Astro route (`/about`): append `/index.html`.
-    request.uri = request.uri + '/index.html';
+    request.uri = `${request.uri}/index.html`;
     return request;
 }
+
+module.exports = { handler };
