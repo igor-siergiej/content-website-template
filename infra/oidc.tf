@@ -1,12 +1,24 @@
 # GitHub Actions OIDC federation → short-lived deploy role (no stored AWS keys).
+#
+# AWS allows exactly one OIDC provider per URL per account, so when an account already
+# owns a `token.actions.githubusercontent.com` provider (the first stack to apply created
+# it) the second apply fails with EntityAlreadyExists. Reuse the existing one by setting
+# var.existing_oidc_provider_arn; leave it empty only in a fresh account so this stack
+# creates the provider itself.
 data "tls_certificate" "github" {
-  url = "https://token.actions.githubusercontent.com"
+  count = var.existing_oidc_provider_arn == "" ? 1 : 0
+  url   = "https://token.actions.githubusercontent.com"
 }
 
 resource "aws_iam_openid_connect_provider" "github" {
+  count           = var.existing_oidc_provider_arn == "" ? 1 : 0
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
+  thumbprint_list = [data.tls_certificate.github[0].certificates[0].sha1_fingerprint]
+}
+
+locals {
+  oidc_provider_arn = var.existing_oidc_provider_arn != "" ? var.existing_oidc_provider_arn : aws_iam_openid_connect_provider.github[0].arn
 }
 
 data "aws_iam_policy_document" "assume" {
@@ -15,7 +27,7 @@ data "aws_iam_policy_document" "assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [local.oidc_provider_arn]
     }
 
     condition {
@@ -76,7 +88,7 @@ data "aws_iam_policy_document" "assume_terraform" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [local.oidc_provider_arn]
     }
 
     condition {
@@ -245,6 +257,53 @@ data "aws_iam_policy_document" "terraform" {
       "iam:DeleteRolePolicy",
     ]
     resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.project}-*"]
+  }
+
+  # SNS + CloudWatch for monitoring.tf (the SNS topic and metric alarms). The reads
+  # (sns:Get*/List*) intentionally use a wildcard suffix because the provider's refresh
+  # path's exact set of read calls is not stable across provider versions; the resource
+  # ARN below still bounds it to this project's topic rather than granting account-wide.
+  # The topic-and-subscription ARN pair is needed because sns:Unsubscribe and
+  # sns:GetSubscriptionAttributes authorize against the subscription ARN (topic ARN +
+  # ":<uuid>"), not the topic ARN alone.
+  statement {
+    sid = "Sns"
+    actions = [
+      "sns:CreateTopic",
+      "sns:DeleteTopic",
+      "sns:SetTopicAttributes",
+      "sns:Subscribe",
+      "sns:Unsubscribe",
+      "sns:Get*",
+      "sns:List*",
+    ]
+    resources = [
+      "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:${var.project}-alerts-use1",
+      "arn:aws:sns:*:${data.aws_caller_identity.current.account_id}:${var.project}-alerts-use1:*",
+    ]
+  }
+
+  # Metric alarm CRUD scoped to this project's own alarm name prefix. cloudwatch:Tag* are
+  # granted up front even though the alarms today carry no tags, so adding tags later
+  # doesn't fail the apply on a missing action instead of on the change itself.
+  statement {
+    sid = "CloudWatchAlarms"
+    actions = [
+      "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DeleteAlarms",
+      "cloudwatch:ListTagsForResource",
+      "cloudwatch:TagResource",
+      "cloudwatch:UntagResource",
+    ]
+    resources = ["arn:aws:cloudwatch:*:${data.aws_caller_identity.current.account_id}:alarm:${var.project}-*"]
+  }
+
+  # cloudwatch:DescribeAlarms is the AWS provider's refresh read for every alarm and
+  # doesn't accept resource-level permissions — AWS only accepts "*" here.
+  statement {
+    sid       = "CloudWatchRead"
+    actions   = ["cloudwatch:DescribeAlarms"]
+    resources = ["*"]
   }
 }
 
