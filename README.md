@@ -81,6 +81,11 @@ Deploy uses GitHub repo variables (no secrets beyond `GITHUB_TOKEN`):
 
 ## CI / deploy
 
+The tracked `jott-config.json` enables local Playwright gates and required PR
+checks. This reusable template has no configured hosted deployment target, so
+the factory profile declares neither deployment nor live smoke. Configure those
+for a deployed project rather than using a placeholder production URL.
+
 - `pull-request.yml`: PR checks on all branches.
 - `ci-cd.yml` (push to `main`): lint, typecheck + test, build (`dist` artifact),
   then `semantic-release` and deploy in parallel. Deploy assumes the AWS role
