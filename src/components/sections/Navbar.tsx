@@ -1,5 +1,6 @@
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
+
 import { GithubIcon, LogoIcon } from '@/components/sections/Icons';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { buttonVariants } from '@/components/ui/button';
@@ -25,6 +26,7 @@ const routeList: RouteProps[] = [
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
     return (
         <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
             <NavigationMenu className="mx-auto">
@@ -66,9 +68,9 @@ export const Navbar = () => {
                                         </a>
                                     ))}
                                     {/* placeholder CTA — replace with this project's own GitHub link */}
+                                    {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                                     <a
                                         rel="noreferrer noopener"
-                                        // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                                         href="#"
                                         target="_blank"
                                         className={`w-[110px] border ${buttonVariants({
@@ -101,9 +103,9 @@ export const Navbar = () => {
 
                     <div className="hidden md:flex gap-2">
                         {/* placeholder CTA — replace with this project's own GitHub link */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a
                             rel="noreferrer noopener"
-                            // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                             href="#"
                             target="_blank"
                             className={`border ${buttonVariants({ variant: 'secondary' })}`}

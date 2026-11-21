@@ -17,9 +17,9 @@ export const Hero = () => {
                     <Button className="w-full md:w-1/3">Get Started</Button>
 
                     {/* placeholder CTA — replace with this project's own GitHub link */}
+                    {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                     <a
                         rel="noreferrer noopener"
-                        // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                         href="#"
                         target="_blank"
                         className={`w-full md:w-1/3 ${buttonVariants({

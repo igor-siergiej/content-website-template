@@ -1,8 +1,10 @@
 import type { CollectionEntry } from 'astro:content';
 import { describe, expect, it } from 'vitest';
+
 import { getRelatedPosts } from './related-posts';
 
 const makePost = (id: string, publishDate: Date): CollectionEntry<'posts'> =>
+    // SAFETY: getRelatedPosts only reads id and data.publishDate; other collection fields are irrelevant here.
     ({ id, data: { title: id, publishDate } }) as CollectionEntry<'posts'>;
 
 describe('getRelatedPosts', () => {

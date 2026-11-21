@@ -10,7 +10,7 @@
 // viewer-request function_association on the distribution's default cache behavior.
 //
 // CloudFront Functions v2 expects a top-level function called `handler`; the
-// `module.exports` line below both documents that contract for biome and makes
+// `module.exports` line below both documents that contract for Oxlint and makes
 // the function reachable from the static analysis that lints the file.
 function handler(event) {
     var request = event.request;
@@ -19,6 +19,7 @@ function handler(event) {
     // e.g. `/rss.xml`, `/favicon.svg`, `/keystatic/_astro/foo.js`).
     var lastSlash = request.uri.lastIndexOf('/');
     var lastSegment = lastSlash === -1 ? request.uri : request.uri.substring(lastSlash + 1);
+
     if (lastSegment.indexOf('.') !== -1) {
         return request;
     }
@@ -26,11 +27,13 @@ function handler(event) {
     // Empty last segment means the URI ended in `/` — strip it, append /index.html.
     if (lastSegment === '') {
         request.uri = `${request.uri}index.html`;
+
         return request;
     }
 
     // Directory-format Astro route (`/about`): append `/index.html`.
     request.uri = `${request.uri}/index.html`;
+
     return request;
 }
 

@@ -40,7 +40,9 @@ export const siteConfig = {
      * LocalBusiness JSON-LD instead of generic Organization — leave undefined
      * for a non-local-business content site.
      */
+    // SAFETY: undefined is a valid unset business; consumers narrow before reading its fields.
     business: undefined as LocalBusinessConfig | undefined,
+    // SAFETY: the empty array contains no elements that could violate the FAQ entry type.
     faqs: [] as { question: string; answer: string }[],
 };
 

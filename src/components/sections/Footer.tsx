@@ -17,21 +17,21 @@ export const Footer = () => {
                 <div className="flex flex-col gap-2">
                     <h3 className="font-bold text-lg">Follow US</h3>
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Github
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Twitter
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Dribbble
                         </a>
@@ -41,21 +41,21 @@ export const Footer = () => {
                 <div className="flex flex-col gap-2">
                     <h3 className="font-bold text-lg">Platforms</h3>
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Web
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Mobile
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Desktop
                         </a>
@@ -65,21 +65,21 @@ export const Footer = () => {
                 <div className="flex flex-col gap-2">
                     <h3 className="font-bold text-lg">About</h3>
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Features
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Pricing
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             FAQ
                         </a>
@@ -89,21 +89,21 @@ export const Footer = () => {
                 <div className="flex flex-col gap-2">
                     <h3 className="font-bold text-lg">Community</h3>
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Youtube
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Discord
                         </a>
                     </div>
 
                     <div>
-                        {/* biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a rel="noreferrer noopener" href="#" className="opacity-60 hover:opacity-100">
                             Twitch
                         </a>
