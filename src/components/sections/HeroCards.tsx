@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+
 import { GithubIcon, LightBulbIcon, LinkedinIcon } from '@/components/sections/Icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -44,9 +45,9 @@ export const HeroCards = () => {
                 <CardFooter>
                     <div>
                         {/* placeholder CTA — replace with this project's own GitHub link */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a
                             rel="noreferrer noopener"
-                            // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                             href="#"
                             target="_blank"
                             className={buttonVariants({
@@ -58,9 +59,9 @@ export const HeroCards = () => {
                             <GithubIcon />
                         </a>
                         {/* placeholder CTA — replace with this project's own X/Twitter link */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a
                             rel="noreferrer noopener"
-                            // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                             href="#"
                             target="_blank"
                             className={buttonVariants({
@@ -81,9 +82,9 @@ export const HeroCards = () => {
                         </a>
 
                         {/* placeholder CTA — replace with this project's own LinkedIn link */}
+                        {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                         <a
                             rel="noreferrer noopener"
-                            // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                             href="#"
                             target="_blank"
                             className={buttonVariants({

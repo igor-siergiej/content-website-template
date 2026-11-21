@@ -1,6 +1,9 @@
 ---
+// JSON-LD is serialized directly; optional object fields may be omitted by JSON.stringify.
+type SchemaValue = string | number | boolean | null | undefined | SchemaValue[] | { [key: string]: SchemaValue };
+
 interface Props {
-    schema: Record<string, unknown>;
+    schema: Record<string, SchemaValue>;
 }
 
 const { schema } = Astro.props;

@@ -56,7 +56,9 @@ await walk(root);
 
 const pkgPath = join(root, 'package.json');
 const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
+
 delete pkg.scripts.init;
+
 await writeFile(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
 
 await rm(join(root, 'scripts'), { recursive: true, force: true });

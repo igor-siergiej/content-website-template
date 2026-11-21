@@ -6,6 +6,11 @@
     "type": "git",
     "url": "https://github.com/igor-siergiej/__APP_NAME__"
   },
+  "engines": {
+    "node": ">=22.22.1",
+    "bun": ">=1.4.4"
+  },
+  "packageManager": "bun@1.4.4",
   "dependencies": {
     "@astrojs/markdoc": "^2.1.0",
     "@astrojs/react": "^7.1.0",
@@ -38,22 +43,29 @@
     "init": "bun run scripts/init.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "lint": "biome check .",
-    "lint:fix": "biome check --fix .",
-    "format": "biome format --write .",
+    "lint": "oxlint -c oxlint.config.mjs --deny-warnings . && oxfmt -c oxfmt.config.mjs --check .",
+    "lint:fix": "oxlint -c oxlint.config.mjs --fix --deny-warnings . && oxfmt -c oxfmt.config.mjs --write .",
+    "format": "oxfmt -c oxfmt.config.mjs --write .",
+    "format:check": "oxfmt -c oxfmt.config.mjs --check .",
     "audit": "fallow-audit",
     "prepare": "husky",
     "release": "semantic-release",
     "typecheck": "astro check"
   },
   "lint-staged": {
-    "*.{ts,tsx,astro,json}": "biome check --fix"
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,astro}": [
+      "oxlint -c oxlint.config.mjs --fix --deny-warnings --no-error-on-unmatched-pattern",
+      "oxfmt -c oxfmt.config.mjs --write --no-error-on-unmatched-pattern"
+    ],
+    "*.{json,jsonc,css,html,md,mdx,yaml,yml}": "oxfmt -c oxfmt.config.mjs --write --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@biomejs/biome": "2.2.5",
+    "@astrojs/compiler-rs": "0.5.2",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
+    "@imapps/oxc-config": "7.0.1",
+    "@oxlint/plugins": "1.94.0",
     "@playwright/test": "^1.62.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -63,6 +75,8 @@
     "@types/node": "^26.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.2.0",
+    "oxfmt": "0.79.0",
+    "oxlint": "1.94.0",
     "semantic-release": "^25.0.8",
     "typescript": "^5.7.0",
     "vitest": "^4.1.10"

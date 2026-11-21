@@ -23,9 +23,9 @@ export const FAQ = () => {
 
             <h3 className="font-medium mt-4">
                 Still have questions?{' '}
+                {/* oxlint-disable-next-line jsx-a11y/anchor-is-valid -- Placeholder; template consumer supplies destination. */}
                 <a
                     rel="noreferrer noopener"
-                    // biome-ignore lint/a11y/useValidAnchor: placeholder link, template consumer fills in real destination
                     href="#"
                     className="text-primary transition-all border-primary hover:border-b-2"
                 >

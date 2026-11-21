@@ -1,4 +1,5 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
+
 import markdoc from '@astrojs/markdoc';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -26,6 +27,7 @@ const keystatic = () => {
                                     if (id === 'virtual:keystatic-config') {
                                         return this.resolve('./keystatic.config', './a');
                                     }
+
                                     return null;
                                 },
                             },
